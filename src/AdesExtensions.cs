@@ -40,6 +40,7 @@ namespace GLEED2D.src
         private const string PROPERTY_BALLBOMB_AMMO = "ammo_ballbomb";
         private const string PROPERTY_AIRSTRIKE_AMMO = "ammo_airstrike";
         private const string PROPERTY_MISSILE_AMMO = "ammo_missile";
+        private const string PROPERTY_GRENADELAUNCHER_AMMO = "ammo_grenadelauncher";
         private const string PROPERTY_BAZOOKA_AMMO = "ammo_bazooka";
         private const string PROPERTY_Y_LIMIT = "limit_y_scroll";
         private const string PROPERTY_TITLE = "title";
@@ -57,12 +58,15 @@ namespace GLEED2D.src
         private const string PROPERTY_TYPE_DEFAULT = "breakable";
         private const string PROPERTY_DYNAMIC = "dynamic";
         private const string PROPERTY_PARENT = "parent";
+        private const string PROPERTY_MINGIBRATIO = "mingibratio";
+        private const string PROPERTY_HEALTHFACTOR = "healthfactor";
 
         private const string TYPEFILTER_BARREL_BREAKABLE = "barrel_breakable";
         private const string TYPEFILTER_BARREL_EXPLODE = "barrel_explode";
         private const string TYPEFILTER_BARREL_ROCKET = "barrel_rocket";
         private const string TYPEFILTER_OBJ_FAIL = "obj_fail";
         private const string TYPEFILTER_DECAL = "decal";
+        
 
         private static string[] typeFilters = new string[] { TYPEFILTER_BARREL_BREAKABLE, TYPEFILTER_BARREL_EXPLODE, TYPEFILTER_BARREL_ROCKET, TYPEFILTER_OBJ_FAIL, TYPEFILTER_DECAL };
 
@@ -73,6 +77,7 @@ namespace GLEED2D.src
         //Poly
         private const string PROPERTY_TEXTURE = "texture";
         private const string PROPERTY_MATERIAL = "material";
+        
 
         private static Dictionary<string, string> fileList;
         
@@ -161,6 +166,7 @@ namespace GLEED2D.src
             writer.WriteAttributeString(PROPERTY_BAZOOKA_AMMO, getLevelCustomProperty(PROPERTY_BAZOOKA_AMMO, level).ToString());
             writer.WriteAttributeString(PROPERTY_AIRSTRIKE_AMMO, getLevelCustomProperty(PROPERTY_AIRSTRIKE_AMMO, level).ToString());
             writer.WriteAttributeString(PROPERTY_MISSILE_AMMO, getLevelCustomProperty(PROPERTY_MISSILE_AMMO, level).ToString());
+            writer.WriteAttributeString(PROPERTY_GRENADELAUNCHER_AMMO, getLevelCustomProperty(PROPERTY_GRENADELAUNCHER_AMMO, level).ToString());
             writer.WriteAttributeString(PROPERTY_TITLE, getLevelCustomProperty(PROPERTY_TITLE, level).ToString());
 
 
@@ -237,6 +243,8 @@ namespace GLEED2D.src
                                 writer.WriteAttributeString("template", template);
                                 writer.WriteAttributeString("rotation", item.getRotation().ToString(CultureInfo.InvariantCulture) + "");
                                 writer.WriteAttributeString(PROPERTY_TYPE, getItemCustomPropertyString(PROPERTY_TYPE, item));
+                                writer.WriteAttributeString(PROPERTY_MINGIBRATIO, getItemCustomPropertyString(PROPERTY_MINGIBRATIO, item));
+                                writer.WriteAttributeString(PROPERTY_HEALTHFACTOR, getItemCustomPropertyString(PROPERTY_HEALTHFACTOR, item));
 
                                 if(item.CustomProperties.ContainsKey(PROPERTY_PARENT)) {
                                     writer.WriteAttributeString(PROPERTY_PARENT, getItemCustomPropertyString(PROPERTY_PARENT, item));
@@ -261,6 +269,8 @@ namespace GLEED2D.src
                             //Polygon specific properties
                             writer.WriteAttributeString(PROPERTY_TEXTURE, getItemCustomPropertyString(PROPERTY_TEXTURE, item));
                             writer.WriteAttributeString(PROPERTY_MATERIAL, getItemCustomPropertyString(PROPERTY_MATERIAL, item));
+                            writer.WriteAttributeString(PROPERTY_MINGIBRATIO, getItemCustomPropertyString(PROPERTY_MINGIBRATIO, item));
+                            writer.WriteAttributeString(PROPERTY_HEALTHFACTOR, getItemCustomPropertyString(PROPERTY_HEALTHFACTOR, item));
 
                             //Polygon vertices
                             writer.WriteStartElement("worldpoints");
@@ -545,7 +555,8 @@ namespace GLEED2D.src
             addCustomProperty(PROPERTY_BALLBOMB_AMMO, "0", "ammo amount",level.CustomProperties);                         
             addCustomProperty(PROPERTY_AIRSTRIKE_AMMO, "0","ammo amount",level.CustomProperties);                         
             addCustomProperty(PROPERTY_MISSILE_AMMO, "0","ammo amount",level.CustomProperties);                         
-            addCustomProperty(PROPERTY_BAZOOKA_AMMO, "0","ammo amount",level.CustomProperties);            
+            addCustomProperty(PROPERTY_BAZOOKA_AMMO, "0","ammo amount",level.CustomProperties);
+            addCustomProperty(PROPERTY_GRENADELAUNCHER_AMMO, "0", "ammo amount", level.CustomProperties);            
             addCustomProperty(PROPERTY_TITLE, "untitled", "title of the level, as seen when playing", level.CustomProperties);
 
             if (!hasProperties)
@@ -588,6 +599,8 @@ namespace GLEED2D.src
         {
             //General
             addCustomProperty(PROPERTY_DYNAMIC, true, "can object move?", i.CustomProperties);
+            addCustomProperty(PROPERTY_MINGIBRATIO, "-1", "if a fragment of this item retains this percentage of area from the original shape, it will be breakable again. default is -1 (unspecified, game engine decides)", i.CustomProperties);
+            addCustomProperty(PROPERTY_HEALTHFACTOR, "1", "health factor - multiplied with default auto calculated health to determine final health of item", i.CustomProperties);
             
         }
         

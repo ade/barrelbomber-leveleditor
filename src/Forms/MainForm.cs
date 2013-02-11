@@ -57,7 +57,7 @@ namespace GLEED2D
         }
         public void updatetitlebar()
         {
-            Text = "GLEED2D - " + levelfilename + (DirtyFlag ? "*" : "");
+            Text = "BarrelBomber-editor - " + levelfilename + (DirtyFlag ? "*" : "");
         }
 
         public static Image getThumbNail(Bitmap bmp, int imgWidth, int imgHeight)
@@ -866,6 +866,12 @@ namespace GLEED2D
             listView1.Clear();
 
             DirectoryInfo di = new DirectoryInfo(path);
+            if (!di.Exists)
+            {
+                di = new DirectoryInfo("c:\\");
+                path = "C:\\";
+            }
+
             textBox1.Text = di.FullName;
             DirectoryInfo[] folders = di.GetDirectories();
             foreach (DirectoryInfo folder in folders)
